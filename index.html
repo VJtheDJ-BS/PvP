@@ -3,9 +3,9 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title id="page-title">Kinematics & Vector Dynamics Lab</title>
-<link id="page-favicon" rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><circle cx='16' cy='16' r='14' fill='%232563eb'/><path d='M8 24 L16 8 L24 24 Z' fill='%23fff'/></svg>">
-<meta name="description" content="Interactive 2D physics kinematics simulation and vector dynamics laboratory.">
+<title id="page-title">Vector Arena 2D - Kinetic Platform Dash</title>
+<link id="page-favicon" rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><circle cx='16' cy='16' r='14' fill='%23ff8a3d'/><polygon points='10,8 24,16 10,24' fill='%23fff'/></svg>">
+<meta name="description" content="Nonviolent 2D kinetic platformer, bouncy ragdoll physics, and direct 1v1 P2P competition.">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/peerjs/1.5.4/peerjs.min.js"></script>
 <style>
 :root {
@@ -252,12 +252,12 @@ kbd {
 .tb-sub .tb-icon {
   font-size: 17px;
 }
-.tb-shoot {
-  background: rgba(220, 38, 38, 0.88);
-  border-color: rgba(248, 113, 113, 0.65);
+.tb-pulse, .tb-shoot {
+  background: rgba(14, 165, 233, 0.88);
+  border-color: rgba(56, 189, 248, 0.65);
 }
-.tb-shoot:active, .tb-shoot.active {
-  background: #ef4444;
+.tb-pulse:active, .tb-pulse.active, .tb-shoot:active, .tb-shoot.active {
+  background: #0284c7;
 }
 .tb-jump {
   background: rgba(37, 99, 235, 0.88);
@@ -312,25 +312,23 @@ kbd {
 <div id="w">
   <canvas id="c"></canvas>
   <div id="o">
-    <!-- STEALTH CLOAK & PANIC TOOLBAR -->
-    <div class="r group-box" style="gap:10px; background:rgba(15,23,42,0.92); border-color:#334155; padding:6px 14px; margin-bottom:2px;">
-      <label style="color:#94a3b8; font-size:12px;">🕶️ Disguise:
-        <select id="cloak-select" style="height:28px; font-size:12px; padding:2px 6px;">
-          <option value="physics" selected>Physics Lab (Default)</option>
-          <option value="classroom">Google Classroom</option>
-          <option value="docs">Google Docs</option>
-          <option value="drive">Google Drive</option>
-          <option value="canvas">Canvas LMS</option>
-          <option value="desmos">Desmos Calculator</option>
-          <option value="wikipedia">Wikipedia</option>
+    <!-- ARENA CUSTOMIZATION & CONTROLS TOOLBAR -->
+    <div class="r group-box" style="gap:12px; background:rgba(15,23,42,0.92); border-color:#334155; padding:6px 14px; margin-bottom:2px;">
+      <label style="color:#94a3b8; font-size:12px;">🎨 Arena Theme:
+        <select id="theme-select" style="height:28px; font-size:12px; padding:2px 6px;">
+          <option value="cyber" selected>Cyber Neon</option>
+          <option value="solar">Solar Flare</option>
+          <option value="emerald">Emerald Grid</option>
+          <option value="midnight">Deep Cosmos</option>
+          <option value="retro">Sunset Synth</option>
         </select>
       </label>
-      <button id="btn-stealth-tab" style="background:#1e293b; color:#38bdf8; border:1px solid #0284c7; border-radius:6px; padding:4px 10px; font-size:12px; font-weight:700; cursor:pointer;" title="Opens in clean about:blank tab undetectable to extension filters">🕶️ Stealth Tab (about:blank)</button>
-      <button id="btn-panic" style="background:#7f1d1d; color:#fca5a5; border:1px solid #dc2626; border-radius:6px; padding:4px 10px; font-size:12px; font-weight:700; cursor:pointer;" title="Panic Button: Instantly leaves to Google Classroom (Hotkeys: ` or \ or Esc)">🚨 Panic [Esc]</button>
+      <button id="btn-fullscreen" style="background:#1e293b; color:#38bdf8; border:1px solid #0284c7; border-radius:6px; padding:4px 10px; font-size:12px; font-weight:700; cursor:pointer;" title="Toggle Fullscreen">⛶ Fullscreen</button>
+      <button id="btn-audio" style="background:#1e293b; color:#10b981; border:1px solid #059669; border-radius:6px; padding:4px 10px; font-size:12px; font-weight:700; cursor:pointer;" title="Toggle Audio">🔊 Sound: ON</button>
     </div>
 
     <h1 class="menu-title" id="t">VECTOR ARENA 2D</h1>
-    <p class="menu-subtitle" id="s">Multi-Agent Kinematics & Direct P2P Simulation</p>
+    <p class="menu-subtitle" id="s">Nonviolent Kinetic Platform Sumo & 1v1 P2P Dash</p>
     
     <div class="r" id="main-menu-btns">
       <button class="btn-act" data-m="1">SOLO (vs CPU)</button>
@@ -396,10 +394,10 @@ kbd {
     <div id="sk" class="r"></div>
 
     <div class="guide-box">
-      <div><b>UNIT 1 (Orange):</b> Move <kbd>A</kbd> / <kbd>D</kbd> &bull; Jump / Thruster <kbd>W</kbd> &bull; Action <kbd>S</kbd> &bull; <b>Cycle Gear <kbd>Z</kbd></b> &bull; <b>Recharge <kbd>X</kbd></b> (In Solo, Arrow Keys + Space work too)</div>
-      <div style="margin-top:4px;"><b>UNIT 2 (Blue):</b> Move <kbd>◀</kbd> / <kbd>▶</kbd> &bull; Jump / Thruster <kbd>▲</kbd> &bull; Action <kbd>▼</kbd> &bull; <b>Cycle Gear <kbd>,</kbd> (<kbd>&lt;</kbd>)</b> &bull; <b>Recharge <kbd>.</kbd> (<kbd>&gt;</kbd>)</b></div>
+      <div><b>UNIT 1 (Orange):</b> Move <kbd>A</kbd> / <kbd>D</kbd> &bull; Jump / Jetpack <kbd>W</kbd> &bull; Kinetic Pulse <kbd>S</kbd> &bull; <b>Cycle Gadget <kbd>Z</kbd></b> &bull; <b>Recharge <kbd>X</kbd></b> (In Solo, Arrow Keys + Space work too)</div>
+      <div style="margin-top:4px;"><b>UNIT 2 (Blue):</b> Move <kbd>◀</kbd> / <kbd>▶</kbd> &bull; Jump / Jetpack <kbd>▲</kbd> &bull; Kinetic Pulse <kbd>▼</kbd> &bull; <b>Cycle Gadget <kbd>,</kbd> (<kbd>&lt;</kbd>)</b> &bull; <b>Recharge <kbd>.</kbd> (<kbd>&gt;</kbd>)</b></div>
       <div style="margin-top:4px;"><b>DIRECT P2P:</b> Click <b style="color:#10b981;">DIRECT P2P</b> &bull; Host creates session &bull; Peer enters 4-digit code &bull; Direct WebRTC data link!</div>
-      <div style="margin-top:6px; opacity:0.9;"><b>DROPS:</b> Golden <b style="color:#f59e0b;">[ ? ]</b> = Gear Modules &bull; Green <b style="color:#10b981;">[ +CHRG ]</b> = Full Energy &bull; White <b style="color:#ef4444;">[ +HP ]</b> = Repair (+35 HP). Air recoil boosts jump velocity!</div>
+      <div style="margin-top:6px; opacity:0.9;"><b>RULES:</b> Nonviolent Sumo! Knock rivals off platforms for <b>RING-OUT</b> points. <b>DROPS:</b> Golden <b style="color:#f59e0b;">[ ? ]</b> = Bouncy Gadgets &bull; Green <b style="color:#10b981;">[ +CHRG ]</b> = Energy Battery &bull; Pink <b style="color:#ec4899;">[ ★ SHIELD ]</b> = Deflector Aura!</div>
     </div>
   </div>
 
@@ -430,9 +428,9 @@ kbd {
           <span class="tb-icon">▲</span>
           <span class="tb-lbl">JUMP</span>
         </button>
-        <button class="tb-btn tb-shoot" data-k="s" title="Action">
+        <button class="tb-btn tb-pulse" data-k="s" title="Kinetic Pulse">
           <span class="tb-icon">●</span>
-          <span class="tb-lbl">ACTION</span>
+          <span class="tb-lbl">PULSE</span>
         </button>
       </div>
     </div>
@@ -485,35 +483,37 @@ function sfx(f, d = .08, t = 'square', v = .06) {
     o.stop(ac.currentTime + d);
   } catch (e) {}
 }
-function sfxNoise(d = 0.12, v = 0.08) {
+function sfxNoise(d = 0.08, v = 0.04) {
   if (NET.active && NET.role === 'host') NET.recordEvent({ t: 'noise', d, v });
   try {
     const ac = getAC();
     const b = ac.createBuffer(1, ac.sampleRate * d, ac.sampleRate);
     const data = b.getChannelData(0);
-    for (let i = 0; i < data.length; i++) data[i] = (Math.random() * 2 - 1) * Math.exp(-i / (data.length * 0.4));
+    for (let i = 0; i < data.length; i++) data[i] = (Math.random() * 2 - 1) * Math.sin(Math.PI * (i / data.length));
     const src = ac.createBufferSource();
     src.buffer = b;
     const g = ac.createGain();
-    g.gain.setValueAtTime(v, ac.currentTime);
+    g.gain.setValueAtTime(v * 0.5, ac.currentTime);
     src.connect(g);
     g.connect(ac.destination);
     src.start();
   } catch (e) {}
 }
 
-// GEAR MODULES ARSENAL
-const WP = {
-  pistol:  { n: 'PULSE-12',  mag: 12, res: 36, cd: 18, d: 11, v: 14, p: 1, sp: .03, kb: 3.2, r: 1.4, c: '#e2e8f0', rel: 45, type: 'semi' },
-  revolver:{ n: 'MAGNUM-6',  mag: 6,  res: 18, cd: 32, d: 28, v: 18, p: 1, sp: .02, kb: 6.8, r: 4.5, c: '#cbd5e1', rel: 55, type: 'heavy' },
-  shotgun: { n: 'SCATTER-6', mag: 6,  res: 18, cd: 48, d: 7,  v: 13, p: 6, sp: .28, kb: 4.2, r: 7.2, c: '#f59e0b', rel: 60, type: 'spread' },
-  smg:     { n: 'RAPID-30',  mag: 30, res: 90, cd: 6,  d: 5,  v: 15, p: 1, sp: .12, kb: 1.3, r: 0.8, c: '#10b981', rel: 42, type: 'auto' },
-  rifle:   { n: 'VECTOR-24', mag: 24, res: 72, cd: 12, d: 14, v: 17, p: 1, sp: .04, kb: 3.8, r: 2.2, c: '#06b6d4', rel: 48, type: 'rifle' },
-  sniper:  { n: 'BEAM-4',    mag: 4,  res: 12, cd: 65, d: 46, v: 28, p: 1, sp: 0,   kb: 11,  r: 6.8, c: '#8b5cf6', rel: 70, type: 'sniper', laser: true },
-  rocket:  { n: 'TORPEDO-2', mag: 2,  res: 6,  cd: 72, d: 0,  v: 8.5,p: 1, sp: 0,   kb: 0,   r: 7.5, c: '#ef4444', rel: 80, ex: 1 },
-  grenade: { n: 'BURST-3',   mag: 3,  res: 9,  cd: 55, d: 0,  v: 11, p: 1, sp: .08, kb: 0,   r: 5.5, c: '#84cc16', rel: 65, ex: 2 }
+// KINETIC SPORTS GADGETS (100% Nonviolent Physics Tools)
+const GD = {
+  wand:    { n: 'PULSE-WAND',    mag: 12, res: 36, cd: 18, v: 14, p: 1, sp: .03, kb: 4.8, r: 1.6, c: '#38bdf8', rel: 45, type: 'pulse' },
+  glove:   { n: 'SPRING-GLOVE',  mag: 6,  res: 18, cd: 32, v: 17, p: 1, sp: .02, kb: 8.5, r: 4.8, c: '#f43f5e', rel: 55, type: 'glove' },
+  scatter: { n: 'SPARK-BURST',   mag: 6,  res: 18, cd: 48, v: 13, p: 6, sp: .28, kb: 5.2, r: 6.8, c: '#f59e0b', rel: 60, type: 'scatter' },
+  aero:    { n: 'AERO-STREAM',   mag: 30, res: 90, cd: 6,  v: 15, p: 1, sp: .12, kb: 2.2, r: 1.0, c: '#10b981', rel: 42, type: 'stream' },
+  vortex:  { n: 'VORTEX-CANNON', mag: 16, res: 48, cd: 16, v: 16, p: 1, sp: .04, kb: 5.6, r: 2.8, c: '#06b6d4', rel: 48, type: 'vortex' },
+  grav:    { n: 'GRAV-RAY',      mag: 4,  res: 12, cd: 65, v: 28, p: 1, sp: 0,   kb: 12.5,r: 7.2, c: '#a855f7', rel: 70, type: 'grav', laser: true },
+  orb:     { n: 'BOUNCE-ORB',    mag: 5,  res: 15, cd: 42, v: 12, p: 1, sp: .05, kb: 9.0, r: 5.0, c: '#ec4899', rel: 60, type: 'orb', bounce: 3 },
+  cyclone: { n: 'CYCLONE-HOOP',  mag: 4,  res: 12, cd: 52, v: 10, p: 1, sp: .06, kb: 7.8, r: 5.2, c: '#84cc16', rel: 65, type: 'cyclone', float: true }
 };
-const GUN_KEYS = ['revolver', 'shotgun', 'smg', 'rifle', 'sniper', 'rocket', 'grenade'];
+const GADGET_KEYS = ['glove', 'scatter', 'aero', 'vortex', 'grav', 'orb', 'cyclone'];
+const WP = GD;
+const GUN_KEYS = GADGET_KEYS;
 
 // ARENAS
 const LV = [
@@ -669,7 +669,7 @@ function chooseStrategy(p, e) {
   const dodgeBias = getDodgeBias();
 
   let situational = 'rush';
-  if (p.hp < 30) {
+  if ((p.stability || 100) < 40) {
     situational = 'defensive';
   } else if (jumpRatio > 0.4) {
     situational = 'balanced';
@@ -729,17 +729,17 @@ function ejectCasing(x, y, f) {
   });
 }
 
-// WEAPON OBJECT FACTORY
+// GADGET OBJECT FACTORY
 function makeW(id) {
-  const def = WP[id] || WP.pistol;
+  const def = GD[id] || GD.wand;
   return { id, mag: def.mag, res: def.res };
 }
 
-// CREATE PLAYER
+// CREATE PLAYER (Nonviolent Kinetic Runner)
 const mk = i => ({
   i, x: L.sp[i], y: 60, vx: 0, vy: 0, f: i ? -1 : 1,
-  hp: 100, maxHp: 100, j: 2,
-  w1: makeW('pistol'),
+  stability: 100, maxStability: 100, shield: 0, wobble: 0, j: 2,
+  w1: makeW('wand'),
   w2: null,
   activeSlot: 0,
   currentStrategy: 'rush',
@@ -785,7 +785,7 @@ function round() {
   P.forEach(p => {
     if (WP[M]) {
       p.w1 = makeW(M);
-      p.w2 = makeW('pistol');
+      p.w2 = makeW('wand');
     } else if (M === 'rr') {
       p.w1 = makeW(GUN_KEYS[R() * GUN_KEYS.length | 0]);
       p.w2 = makeW(GUN_KEYS[R() * GUN_KEYS.length | 0]);
@@ -869,25 +869,25 @@ function endMatch() {
   }
 }
 
-// FIRING WEAPONS
+// ACTIVATING KINETIC GADGETS
 function fire(p) {
   const cur = activeW(p);
-  const def = WP[cur.id];
+  const def = GD[cur.id] || GD.wand;
 
-  if (p.rel > 0) return; // Cannot shoot while reloading
+  if (p.rel > 0) return; // Recharging in progress
 
-  // Track player shots for AI analysis
+  // Track player gadget actions for AI analysis
   if (p.i === 0) {
     AI_MEMORY.shots++;
   }
 
-  // Check Magazine
+  // Check Charge
   if (cur.mag <= 0) {
     if (cur.res > 0) {
       startReload(p);
     } else {
-      sfx(160, 0.04, 'square', 0.04); // Dry fire click
-      addFT('DEPLETED!', p.x, p.y - 30, '#ef4444');
+      sfx(280, 0.04, 'triangle', 0.04);
+      addFT('EMPTY CHARGE!', p.x, p.y - 30, '#f59e0b');
       p.cd = 15;
     }
     return;
@@ -896,16 +896,16 @@ function fire(p) {
   cur.mag--;
   p.cd = def.cd;
 
-  // Mid-air recoil boost
-  const recoilBoost = p.g ? 1 : 1.45;
+  // Mid-air kinetic recoil boost (aids platform maneuvers)
+  const recoilBoost = p.g ? 1 : 1.5;
   p.vx -= p.f * def.r * recoilBoost;
   p.tilt -= p.f * 0.35;
-  S.sh = Math.max(S.sh, def.r * 1.4);
+  S.sh = Math.max(S.sh, def.r * 1.2);
 
-  // Eject casing
+  // Eject festive spark
   ejectCasing(p.x - p.f * 4, p.y - 2, p.f);
 
-  // Bullets spawn
+  // Spawn Kinetic Impulse Orbs / Pulses
   for (let i = 0; i < def.p; i++) {
     const a = (p.f < 0 ? Math.PI : 0) + (R() - .5) * def.sp * 2;
     B.push({
@@ -916,62 +916,70 @@ function fire(p) {
       o: p,
       w: def,
       id: cur.id,
-      l: 90,
-      bounces: def.ex === 2 ? 3 : 0
+      l: 95,
+      bounces: def.bounce || 0
     });
   }
 
-  // Gun sound & visual puff
-  puff(p.x + p.f * 26, p.y - 2, '#ffd76b', 5, 2.5);
-  if (cur.id === 'sniper') {
-    sfx(950, 0.15, 'sawtooth', 0.1);
-    sfxNoise(0.08, 0.12);
-  } else if (cur.id === 'shotgun') {
-    sfx(140, 0.18, 'sawtooth', 0.1);
-    sfxNoise(0.12, 0.14);
-  } else if (cur.id === 'revolver') {
-    sfx(220, 0.14, 'square', 0.09);
-    sfxNoise(0.06, 0.08);
-  } else if (def.ex) {
-    sfx(90, 0.16, 'sawtooth', 0.09);
+  // Visual puff & melodic audio
+  puff(p.x + p.f * 26, p.y - 2, def.c, 6, 2.5);
+  if (cur.id === 'grav') {
+    sfx(620, 0.14, 'sine', 0.1);
+  } else if (cur.id === 'glove') {
+    sfx(220, 0.15, 'triangle', 0.12);
+  } else if (cur.id === 'orb') {
+    sfx(480, 0.12, 'sine', 0.09);
+  } else if (cur.id === 'scatter') {
+    sfx(540, 0.1, 'triangle', 0.08);
   } else {
-    sfx(260 + def.d * 8, 0.08, 'square', 0.07);
+    sfx(380 + (def.kb || 5) * 20, 0.08, 'triangle', 0.07);
   }
 
-  // Auto reload when emptied
+  // Auto recharge when empty
   if (cur.mag <= 0 && cur.res > 0) {
     startReload(p);
   }
 }
 
-function dmg(q, d, kx, ky) {
-  q.hp -= d;
-  q.hurt = 10;
-  const m = (1 + (100 - Math.max(0, q.hp)) / 65) * (S.kb ? 2.3 : 1);
-  q.vx += kx * m;
-  q.vy += ky * m;
-  q.tilt += kx * 0.08;
-  puff(q.x, q.y, q.c, 8, 4);
-  sfx(110, 0.12, 'sawtooth', 0.09);
-  S.sh = Math.max(S.sh, d / 3.5);
+// NONVIOLENT KINETIC PUSH (Zero damage, pure elastic physics displacement)
+function applyKineticPush(q, kx, ky) {
+  if (q.shield > 0) {
+    puff(q.x, q.y, '#ec4899', 14, 4);
+    sfx(720, 0.12, 'sine', 0.08);
+    addFT('DEFLECTED!', q.x, q.y - 32, '#ec4899');
+    return;
+  }
+
+  q.stability = Math.max(20, q.stability - 18);
+  q.wobble = 12;
+  const balanceFactor = (1 + (100 - q.stability) / 60) * (S.kb ? 2.3 : 1.25);
+  q.vx += kx * balanceFactor;
+  q.vy += ky * balanceFactor;
+  q.tilt += kx * 0.12;
+  puff(q.x, q.y, q.c, 8, 3.5);
+  sfx(360, 0.08, 'triangle', 0.08);
+  S.sh = Math.max(S.sh, 4);
 }
 
-function boom(b) {
-  puff(b.x, b.y, '#ff8a3d', 35, 8);
-  puff(b.x, b.y, '#64748b', 20, 5);
-  S.sh = 16;
-  sfx(55, 0.35, 'sawtooth', 0.15);
-  sfxNoise(0.25, 0.18);
+// KINETIC POP (Harmless expanding force wave)
+function triggerKineticPop(b) {
+  puff(b.x, b.y, b.w.c || '#ec4899', 24, 6);
+  S.sh = 6;
+  sfx(440, 0.18, 'sine', 0.1);
 
   for (const q of P) {
     const dx = q.x - b.x, dy = q.y - b.y;
     const d = Math.hypot(dx, dy) || 1;
     if (d < 110 && !q.dead) {
       const f = 1 - d / 110;
-      dmg(q, 8 + 42 * f, (dx / d) * 18 * f, (dy / d) * 18 * f - 4);
+      applyKineticPush(q, (dx / d) * 16 * f, (dy / d) * 16 * f - 4);
     }
   }
 }
+
+// Backwards-compatible aliases
+const dmg = (q, d, kx, ky) => applyKineticPush(q, kx, ky);
+const boom = b => triggerKineticPop(b);
 
 // ENHANCED BOT AI (Adaptive Memory & Strategic Decision Making)
 function ai(p) {
@@ -1001,11 +1009,11 @@ function ai(p) {
     p.f = leadX > p.x ? 1 : -1;
   }
 
-  // 4. Tactical Spacing influenced by Strategy & Weapons
+  // 4. Tactical Spacing influenced by Strategy & Gadgets
   let idealDist = strat.distance;
-  if (cur.id === 'shotgun') idealDist = Math.min(idealDist, 130);
-  else if (cur.id === 'sniper') idealDist = Math.max(idealDist, 470);
-  else if (cur.id === 'rocket') idealDist = Math.max(idealDist, 330);
+  if (cur.id === 'glove' || cur.id === 'scatter') idealDist = Math.min(idealDist, 130);
+  else if (cur.id === 'grav') idealDist = Math.max(idealDist, 470);
+  else if (cur.id === 'vortex' || cur.id === 'orb') idealDist = Math.max(idealDist, 300);
 
   let d = 0;
   if (ad > idealDist + 55) d = p.f;
@@ -1013,23 +1021,21 @@ function ai(p) {
 
   // 5. React to learned movement preferences: Cut off escape routes
   if (AI_MEMORY.preferredSide === 1) {
-    // Player likes moving right. Approach from the right / intercept
     if (p.x < e.x) d = -1;
   } else if (AI_MEMORY.preferredSide === -1) {
-    // Player likes moving left.
     if (p.x > e.x) d = 1;
   }
 
-  // 6. Crate Gathering (Prioritize Health when low, Ammo when dry)
+  // 6. Crate Gathering (Prioritize Shield when unstable, Battery when dry)
   let bestCrate = null;
   let minDist = 450;
   for (const cr of CR) {
     if (cr.y < 0) continue;
     const cdist = Math.hypot(cr.x - p.x, cr.y - p.y);
     let priority = false;
-    if (cr.type === 'health' && p.hp < 65) priority = true;
-    if (cr.type === 'ammo' && cur.res <= 0) priority = true;
-    if (cr.type === 'weapon' && (!p.w2 || p.w2.id === 'pistol')) priority = true;
+    if (cr.type === 'shield' && (p.stability || 100) < 65) priority = true;
+    if (cr.type === 'battery' && cur.res <= 0) priority = true;
+    if (cr.type === 'gadget' && (!p.w2 || p.w2.id === 'wand')) priority = true;
 
     if ((priority || cdist < minDist) && cdist < 500) {
       minDist = cdist;
@@ -1062,11 +1068,9 @@ function ai(p) {
 
   // Counter jump-spamming:
   if (jumpRatio > 0.35) {
-    // Player jumps frequently. Prefer weapons that work well against airborne targets
-    if ((cur.id === 'sniper' || cur.id === 'rifle') && Math.abs(dy) < 65) {
+    if ((cur.id === 'grav' || cur.id === 'vortex') && Math.abs(dy) < 65) {
       c.s = true;
     }
-    // Try to keep vertical distance
     if (dy < -40) {
       c.j = false;
     }
@@ -1075,7 +1079,7 @@ function ai(p) {
   // Jetpack recovery from abyss
   if (p.y > 440 && p.fu > 10) c.j = true;
 
-  // 8. Tactical Weapon Switching (Z) & Reloading (X)
+  // 8. Tactical Gadget Switching (Z) & Recharging (X)
   if (cur.mag <= 0) {
     if (p.w2 && p.w2.mag > 0 && R() < 0.18) {
       c.sw = true;
@@ -1083,15 +1087,15 @@ function ai(p) {
       c.re = true;
     }
   } else if (cur.mag < def.mag * 0.4 && ad > 300 && p.rel <= 0 && cur.res > 0 && R() < 0.04) {
-    // Reload safely when at distance
+    // Recharge safely when at distance
     c.re = true;
   }
 
-  // 9. Shooting decision (scaled by strategy aggression)
+  // 9. Kinetic pulse decision (scaled by strategy aggression)
   const baseShootChance = diff === 'easy' ? 0.04 : (diff === 'nightmare' ? 0.16 : 0.09);
   const shootChance = baseShootChance * (strat.aggression / 0.5);
-  const alignedY = Math.abs(dy) < (cur.id === 'shotgun' ? 85 : 45);
-  c.s = c.s || (alignedY && ad < (cur.id === 'sniper' ? 850 : 620) && R() < shootChance);
+  const alignedY = Math.abs(dy) < (cur.id === 'scatter' ? 85 : 45);
+  c.s = c.s || (alignedY && ad < (cur.id === 'grav' ? 850 : 620) && R() < shootChance);
 
   // Nightmare instant dodging
   if (diff === 'nightmare') {
@@ -1199,10 +1203,13 @@ function step(p) {
   const targetTilt = (p.vx * 0.035) + (p.g ? 0 : (p.vy > 0 ? 0.12 * p.f : -0.12 * p.f));
   p.tilt += (targetTilt - p.tilt) * 0.2;
   p.t += Math.abs(p.vx) * 0.3 + 0.05;
+  if (p.stability < 100) p.stability = Math.min(100, p.stability + 0.35);
+  if (p.shield > 0) p.shield--;
+  if (p.wobble > 0) p.wobble--;
   p.hurt--;
   p.cd--;
 
-  // Shooting
+  // Kinetic pulse action
   if (c.s && p.cd <= 0) fire(p);
 }
 
@@ -1244,62 +1251,55 @@ function upd() {
     learnFromPlayer(P[0]);
   }
 
-  // Update Bullets & Projectiles
+  // Update Kinetic Orbs & Pulses
   for (const b of B) {
     b.x += b.vx;
     b.y += b.vy;
     b.l--;
 
-    // Rocket / Grenade smoke trail
-    if (b.w.ex && S.t % 2) {
-      FX.push({ x: b.x, y: b.y, vx: (R() - .5) * 0.5, vy: (R() - .5) * 0.5, l: 16, c: '#94a3b8' });
+    // Aerodynamic cyclone / float trail
+    if (b.w.float) {
+      b.vy *= 0.94;
+      if (S.t % 3 === 0) {
+        FX.push({ x: b.x, y: b.y, vx: (R() - .5) * 0.4, vy: (R() - .5) * 0.4, l: 14, c: b.w.c });
+      }
     }
 
-    // Grenade bouncing physics
-    if (b.w.ex === 2) {
-      b.vy += G * 0.5;
+    // Bounce-Orb bouncing physics
+    if (b.bounces > 0) {
+      b.vy += G * 0.45;
       for (const [x, y, w] of PL) {
         if (b.x > x && b.x < x + w && b.y > y - 4 && b.y < y + 16) {
-          b.vy = -b.vy * 0.65;
-          b.vx *= 0.75;
+          b.vy = -b.vy * 0.75;
+          b.vx *= 0.82;
           b.bounces--;
-          sfx(200, 0.03, 'triangle', 0.04);
+          sfx(340, 0.03, 'sine', 0.04);
+          puff(b.x, b.y, b.w.c, 3, 1.5);
           if (b.bounces <= 0) {
-            boom(b);
+            triggerKineticPop(b);
             b.l = 0;
           }
         }
       }
     }
 
-    // Hit Players
+    // Hit Players (Zero damage, pure elastic physics displacement)
     for (const q of P) {
-      if (!q.dead && q !== b.o && Math.abs(b.x - q.x) < 18 && Math.abs(b.y - q.y) < 25) {
-        if (b.w.ex) {
-          boom(b);
+      if (!q.dead && q !== b.o && Math.abs(b.x - q.x) < 20 && Math.abs(b.y - q.y) < 26) {
+        if (b.bounces > 0) {
+          triggerKineticPop(b);
         } else {
-          dmg(q, b.w.d, Math.sign(b.vx) * b.w.kb, -1.8);
-          // Spark hit particles
-          puff(b.x, b.y, '#f59e0b', 4, 3);
+          applyKineticPush(q, Math.sign(b.vx) * b.w.kb, -2.0);
+          puff(b.x, b.y, b.w.c, 5, 3);
         }
         b.l = 0;
         break;
       }
     }
-
-    // Rocket wall impact
-    if (b.l > 0 && b.w.ex === 1) {
-      for (const [x, y, w] of PL) {
-        if (b.x > x && b.x < x + w && b.y > y && b.y < y + 16) {
-          boom(b);
-          b.l = 0;
-        }
-      }
-    }
   }
   B = B.filter(b => b.l > 0 && b.x > -60 && b.x < W + 60 && b.y > -60 && b.y < H + 60);
 
-  // Shell Casings Update
+  // Spark Casings / Confetti Update
   for (const cs of CS) {
     cs.x += cs.vx;
     cs.y += cs.vy;
@@ -1316,15 +1316,15 @@ function upd() {
   }
   CS = CS.filter(cs => cs.l > 0);
 
-  // Spawn New Crates (Weapon, Ammo, Health)
+  // Spawn New Supply Crates (Gadget, Battery, Deflector Shield)
   if (--S.nc <= 0 && CR.length < 3 && S.md === 'n') {
     const roll = R();
-    let type = 'weapon';
-    let item = GUN_KEYS[R() * GUN_KEYS.length | 0];
+    let type = 'gadget';
+    let item = GADGET_KEYS[R() * GADGET_KEYS.length | 0];
     if (roll < 0.45) {
-      type = 'ammo';
-    } else if (roll < 0.65) {
-      type = 'health';
+      type = 'battery';
+    } else if (roll < 0.70) {
+      type = 'shield';
     }
     CR.push({
       x: 180 + R() * 600,
@@ -1359,27 +1359,26 @@ function upd() {
     // Player Pickup
     for (const q of P) {
       if (!q.dead && Math.abs(q.x - c.x) < 28 && Math.abs(q.y - c.y) < 32) {
-        if (c.type === 'weapon') {
+        if (c.type === 'gadget') {
           const nw = makeW(c.item);
           if (!q.w2) q.w2 = nw;
           else if (q.activeSlot === 0) q.w1 = nw;
           else q.w2 = nw;
-          puff(c.x, c.y, '#f59e0b', 14, 4);
+          puff(c.x, c.y, '#38bdf8', 14, 4);
           sfx(620, 0.12, 'triangle');
-          addFT(`EQUIPPED ${WP[c.item].n}!`, q.x, q.y - 32, '#f59e0b');
-        } else if (c.type === 'ammo') {
-          // Refill all reserve ammo
-          const def1 = WP[q.w1.id];
+          addFT(`EQUIPPED ${GD[c.item].n}!`, q.x, q.y - 32, '#38bdf8');
+        } else if (c.type === 'battery') {
+          const def1 = GD[q.w1.id];
           q.w1.res = def1.res;
-          if (q.w2) q.w2.res = WP[q.w2.id].res;
+          if (q.w2) q.w2.res = GD[q.w2.id].res;
           puff(c.x, c.y, '#10b981', 14, 4);
           sfx(740, 0.14, 'triangle');
-          addFT('+FULL ENERGY!', q.x, q.y - 32, '#10b981');
-        } else if (c.type === 'health') {
-          q.hp = Math.min(100, q.hp + 35);
-          puff(c.x, c.y, '#ef4444', 14, 4);
-          sfx(520, 0.15, 'sine');
-          addFT('+35 HP', q.x, q.y - 32, '#ef4444');
+          addFT('+FULL BATTERY!', q.x, q.y - 32, '#10b981');
+        } else if (c.type === 'shield') {
+          q.shield = 360;
+          puff(c.x, c.y, '#ec4899', 14, 4);
+          sfx(580, 0.15, 'sine');
+          addFT('★ DEFLECTOR SHIELD!', q.x, q.y - 32, '#ec4899');
         }
         c.y = 1e4;
       }
@@ -1403,12 +1402,12 @@ function upd() {
   }
   FT = FT.filter(ft => ft.l > 0);
 
-  // K.O. & Ring-out Checks
-  const d = P.filter(p => p.hp <= 0 || p.y > H + 65 || p.x < -80 || p.x > W + 80);
+  // Platform Sumo Ring-Out Check (No damage, purely falling off platforms)
+  const d = P.filter(p => p.y > H + 65 || p.x < -80 || p.x > W + 80);
   if (d.length && S.st === 'play') {
     d.forEach(p => {
       p.dead = 1;
-      puff(Math.max(30, Math.min(W - 30, p.x)), Math.min(p.y, H - 30), p.c, 45, 9);
+      puff(Math.max(30, Math.min(W - 30, p.x)), Math.min(p.y, H - 30), p.c, 35, 8);
     });
     P.forEach(q => { if (!q.dead) S.sc[q.i]++; });
 
@@ -1419,9 +1418,9 @@ function upd() {
     }
 
     S.st = 'over';
-    S.ot = 110;
-    S.msg = d.length > 1 ? 'DRAW' : 'DOWN!';
-    S.mt = 110;
+    S.ot = 100;
+    S.msg = d.length > 1 ? 'TIE!' : 'RING-OUT!';
+    S.mt = 100;
     S.sh = 14;
     sfx(85, 0.45, 'sawtooth', 0.12);
   }
@@ -1432,50 +1431,71 @@ function upd() {
 }
 
 // DRAW WEAPON SILHOUETTES
-function drawGunSilhouette(wId, f) {
+// DRAW KINETIC GADGET SILHOUETTES
+function drawGadgetSilhouette(wId, f) {
   X.fillStyle = '#1e293b';
-  X.fillRect(0, -3, 8, 6); // Hand grip
-  X.fillStyle = WP[wId].c || '#cbd5e1';
+  X.fillRect(0, -3, 7, 6); // Handle grip
+  X.fillStyle = GD[wId] ? GD[wId].c : '#38bdf8';
 
   switch (wId) {
-    case 'revolver':
-      X.fillRect(6, -4, 9, 7); // cylinder
-      X.fillRect(15, -4, 11, 4); // barrel
+    case 'glove': // Spring boxing glove
+      X.strokeStyle = '#94a3b8';
+      X.lineWidth = 2;
+      X.beginPath();
+      X.moveTo(6, 0); X.lineTo(10, -4); X.lineTo(14, 2); X.lineTo(18, 0);
+      X.stroke();
+      X.fillStyle = '#f43f5e';
+      X.beginPath();
+      X.roundRect(17, -7, 14, 14, 5);
+      X.fill();
       break;
-    case 'shotgun':
-      X.fillRect(6, -4, 18, 5); // heavy barrel
-      X.fillStyle = '#78350f';
-      X.fillRect(-4, -1, 8, 4); // stock
+    case 'scatter': // Spark cluster nozzle
+      X.fillRect(6, -4, 12, 8);
+      X.fillStyle = '#f59e0b';
+      X.fillRect(18, -6, 4, 3);
+      X.fillRect(18, -1, 5, 2);
+      X.fillRect(18, 3, 4, 3);
       break;
-    case 'smg':
-      X.fillRect(6, -4, 14, 5);
-      X.fillStyle = '#0f172a';
-      X.fillRect(9, 1, 4, 7); // mag stick
+    case 'aero': // Aero stream nozzle
+      X.fillRect(6, -4, 15, 6);
+      X.fillStyle = '#10b981';
+      X.fillRect(12, 2, 4, 6);
       break;
-    case 'rifle':
-      X.fillRect(6, -4, 20, 5);
-      X.fillStyle = '#0f172a';
-      X.fillRect(10, 1, 5, 8); // curved mag
-      X.fillRect(7, -7, 6, 3); // sight
+    case 'vortex': // Vortex focus rings
+      X.fillRect(6, -5, 12, 10);
+      X.strokeStyle = '#06b6d4';
+      X.lineWidth = 2;
+      X.strokeRect(18, -7, 5, 14);
       break;
-    case 'sniper':
-      X.fillRect(6, -3, 26, 4); // long barrel
-      X.fillStyle = '#312e81';
-      X.fillRect(10, -7, 10, 4); // scope
+    case 'grav': // Grav ray projector
+      X.fillRect(6, -3, 24, 5);
+      X.fillStyle = '#a855f7';
+      X.fillRect(14, -6, 8, 3); // lens mount
       break;
-    case 'rocket':
-      X.fillRect(2, -7, 24, 10); // bazooka tube
-      X.fillStyle = '#ef4444';
-      X.fillRect(26, -6, 6, 8); // warhead
+    case 'orb': // Bounce orb launcher
+      X.fillRect(6, -4, 10, 8);
+      X.fillStyle = '#ec4899';
+      X.beginPath();
+      X.arc(19, 0, 6, 0, 7);
+      X.fill();
       break;
-    case 'grenade':
-      X.fillRect(6, -5, 14, 8); // drum
-      X.fillRect(20, -4, 8, 5); // barrel
+    case 'cyclone': // Aerodynamic cyclone hoop
+      X.fillRect(6, -3, 8, 6);
+      X.strokeStyle = '#84cc16';
+      X.lineWidth = 2.5;
+      X.beginPath();
+      X.arc(18, 0, 7, 0, 7);
+      X.stroke();
       break;
-    default: // pistol
-      X.fillRect(6, -3, 14, 5);
+    default: // wand
+      X.fillRect(6, -2, 14, 4);
+      X.fillStyle = '#38bdf8';
+      X.beginPath();
+      X.arc(22, 0, 4.5, 0, 7);
+      X.fill();
   }
 }
+const drawGunSilhouette = drawGadgetSilhouette;
 
 // DRAW HATS & ACCESSORIES (16 Detailed Customs)
 function drawAccessory(a, k) {
@@ -1554,7 +1574,7 @@ function drawAccessory(a, k) {
 // DRAW PLAYER
 function drawP(p) {
   if (p.dead) return;
-  const s = Math.min(0.22, Math.abs(p.vy) * 0.018), h = p.hurt > 0;
+  const s = Math.min(0.22, Math.abs(p.vy) * 0.018), h = (p.wobble || 0) > 6;
   const cur = activeW(p);
 
   X.save();
@@ -1562,6 +1582,15 @@ function drawP(p) {
   X.rotate(p.tilt);
   X.scale(1 - s * 0.5, 1 + s);
   X.translate(0, -20);
+
+  // Deflector Shield Aura
+  if (p.shield > 0) {
+    X.strokeStyle = (S.t % 8 < 4) ? '#38bdf8' : '#ec4899';
+    X.lineWidth = 3;
+    X.beginPath();
+    X.arc(0, -6, 26, 0, 7);
+    X.stroke();
+  }
 
   // Running Legs
   const r = Math.sin(p.t) * (p.g ? 7.5 : 3.5);
@@ -1605,15 +1634,15 @@ function drawP(p) {
   X.fillStyle = '#0f172a';
   X.fillRect(3, -25, 4, 4);
 
-  // Gun Arm & Equipped Weapon
+  // Equipped Kinetic Gadget
   X.save();
   X.translate(6, -2);
   if (p.swapT > 0) X.rotate(-p.swapT * 0.25); // swap flip animation
-  drawGunSilhouette(cur.id, p.f);
+  drawGadgetSilhouette(cur.id, p.f);
 
-  // Sniper Laser Sight Indicator
-  if (cur.id === 'sniper' && !p.dead) {
-    X.strokeStyle = 'rgba(239, 68, 68, 0.45)';
+  // Grav-Ray Targeting Guide
+  if ((cur.id === 'grav' || cur.id === 'sniper') && !p.dead) {
+    X.strokeStyle = 'rgba(168, 85, 247, 0.5)';
     X.lineWidth = 1.5;
     X.setLineDash([6, 4]);
     X.beginPath();
@@ -1685,7 +1714,7 @@ function draw() {
   for (const c of CR) {
     if (c.chute) {
       // Draw parachute
-      X.fillStyle = c.type === 'ammo' ? '#10b981' : (c.type === 'health' ? '#ef4444' : '#f59e0b');
+      X.fillStyle = c.type === 'battery' ? '#10b981' : (c.type === 'shield' ? '#ec4899' : '#f59e0b');
       X.beginPath();
       X.arc(c.x, c.y - 20, 18, Math.PI, 0);
       X.fill();
@@ -1696,21 +1725,20 @@ function draw() {
       X.stroke();
     }
 
-    if (c.type === 'ammo') {
+    if (c.type === 'battery') {
       X.fillStyle = '#064e3b';
       X.fillRect(c.x - 14, c.y - 14, 28, 28);
       X.strokeStyle = '#10b981'; X.lineWidth = 2.5;
       X.strokeRect(c.x - 14, c.y - 14, 28, 28);
       X.fillStyle = '#6ee7b7'; X.font = '900 10px system-ui'; X.textAlign = 'center';
       X.fillText('CHRG', c.x, c.y + 4);
-    } else if (c.type === 'health') {
-      X.fillStyle = '#f8fafc';
+    } else if (c.type === 'shield') {
+      X.fillStyle = '#831843';
       X.fillRect(c.x - 14, c.y - 14, 28, 28);
-      X.strokeStyle = '#ef4444'; X.lineWidth = 2.5;
+      X.strokeStyle = '#ec4899'; X.lineWidth = 2.5;
       X.strokeRect(c.x - 14, c.y - 14, 28, 28);
-      X.fillStyle = '#ef4444';
-      X.fillRect(c.x - 3, c.y - 9, 6, 18);
-      X.fillRect(c.x - 9, c.y - 3, 18, 6);
+      X.fillStyle = '#fbcfe8'; X.font = '900 14px system-ui'; X.textAlign = 'center';
+      X.fillText('★', c.x, c.y + 5);
     } else {
       X.fillStyle = '#b45309';
       X.fillRect(c.x - 14, c.y - 14, 28, 28);
@@ -1724,12 +1752,16 @@ function draw() {
   // Draw Players
   P.forEach(drawP);
 
-  // Draw Bullets
+  // Draw Kinetic Orbs & Pulses
   for (const b of B) {
     X.fillStyle = b.w.c;
     X.beginPath();
-    X.arc(b.x, b.y, b.w.ex ? 6.5 : 3.2, 0, 7);
+    X.arc(b.x, b.y, b.w.bounce ? 5.5 : 3.5, 0, 7);
     X.fill();
+    if (b.w.bounce) {
+      X.strokeStyle = '#fff'; X.lineWidth = 1.2;
+      X.stroke();
+    }
   }
 
   // Particles
@@ -1758,12 +1790,19 @@ function draw() {
     const cur = activeW(p);
     const sec = p.w2 && p.activeSlot === 0 ? p.w2 : (p.activeSlot === 1 ? p.w1 : null);
 
-    // HP Bar Container
+    // Stability Bar Container
     X.fillStyle = 'rgba(15, 23, 42, 0.75)';
     X.roundRect(x, 16, 320, 18, 5); X.fill();
-    const w = Math.max(0, p.hp) * 3.2;
-    X.fillStyle = p.c;
+    const w = Math.max(0, p.stability || 100) * 3.2;
+    X.fillStyle = p.shield > 0 ? '#ec4899' : p.c;
     X.roundRect(l ? x : x + 320 - w, 16, w, 18, 5); X.fill();
+
+    // Stability / Shield Text
+    X.font = '900 11px system-ui';
+    X.fillStyle = '#fff';
+    X.textAlign = l ? 'left' : 'right';
+    const stabLabel = p.shield > 0 ? '★ DEFLECTOR ACTIVE' : `STABILITY ${Math.round(p.stability || 100)}%`;
+    X.fillText(stabLabel, l ? x + 8 : x + 312, 30);
 
     // Jetpack Fuel Bar
     X.fillStyle = 'rgba(15, 23, 42, 0.75)';
@@ -1771,19 +1810,19 @@ function draw() {
     X.fillStyle = '#f59e0b';
     X.fillRect(l ? x : x + 320 - p.fu * 3.2, 37, p.fu * 3.2, 5);
 
-    // Ammo & Weapon Info
+    // Gadget & Charge Info
     X.font = '900 15px system-ui';
     X.textAlign = l ? 'left' : 'right';
     X.fillStyle = '#fff';
-    const ammoTxt = `${WP[cur.id].n}  [${cur.mag} / ${cur.res}]`;
+    const ammoTxt = `${GD[cur.id].n}  [${cur.mag} / ${cur.res}]`;
     X.fillText(ammoTxt, l ? x : x + 320, 60);
 
-    // Secondary Weapon / Holster Preview
+    // Secondary Gadget Preview
     if (sec) {
       X.font = '700 11px system-ui';
       X.fillStyle = 'rgba(255, 255, 255, 0.65)';
       const swKey = l ? '[Z]' : '[,]';
-      const secTxt = `Sub: ${WP[sec.id].n} (${sec.mag}) ${swKey}`;
+      const secTxt = `Sub: ${GD[sec.id].n} (${sec.mag}) ${swKey}`;
       X.fillText(secTxt, l ? x : x + 320, 75);
     }
 
@@ -1854,20 +1893,10 @@ function loop(t) {
 requestAnimationFrame(loop);
 
 // KEYBOARD EVENTS
-let lastEscTime = 0;
 addEventListener('keydown', e => {
-  // Instant emergency panic hotkeys: backtick `, backslash \, or double-tap Escape
-  if (e.code === 'Backquote' || e.key === '`' || e.key === '\\') {
-    triggerPanic();
+  if (e.code === 'Escape' && S.st !== 'menu') {
+    $('o').hidden = !$('o').hidden;
     return;
-  }
-  if (e.code === 'Escape') {
-    const now = Date.now();
-    if (now - lastEscTime < 500) {
-      triggerPanic();
-      return;
-    }
-    lastEscTime = now;
   }
   K[e.code] = 1;
   if (/Arrow|Space|KeyW|KeyA|KeyS|KeyD|KeyZ|KeyX/.test(e.code) && $('o').hidden) {
@@ -1905,17 +1934,17 @@ const ACN = [
 
 // MODIFIERS LIST
 const MODS = [
-  ['n',       'Normal Crates (Guns, Ammo, Health)'],
-  ['pistol',  'Pistols Only'],
-  ['revolver','Revolvers Only'],
-  ['shotgun', 'Shotguns Only'],
-  ['smg',     'SMGs Only'],
-  ['rifle',   'Assault Rifles Only'],
-  ['sniper',  'Snipers Only'],
-  ['rocket',  'Rockets Only'],
-  ['grenade', 'Grenades Only'],
-  ['rr',      'Random Weapons Each Round'],
-  ['ch',      'CHAOS: New Weapon Every 4s']
+  ['n',       'Standard Crates (Gadgets, Battery, Shield)'],
+  ['wand',    'Pulse Wands Only'],
+  ['glove',   'Spring Gloves Only'],
+  ['scatter', 'Spark Bursts Only'],
+  ['aero',    'Aero Streams Only'],
+  ['vortex',  'Vortex Cannons Only'],
+  ['grav',    'Grav Rays Only'],
+  ['orb',     'Bounce Orbs Only'],
+  ['cyclone', 'Cyclone Hoops Only'],
+  ['rr',      'Random Gadgets Each Round'],
+  ['ch',      'CHAOS: New Gadget Every 4s']
 ];
 
 const opt = (a, f) => a.map(f).join('');
@@ -1934,7 +1963,7 @@ function pv(i) {
   X.scale(0.85, 0.85);
   drawP({
     x: 24, y: 44, f: 1, vy: 0, tilt: 0, t: 0, g: 1, hurt: 0,
-    w1: makeW('pistol'), w2: null, activeSlot: 0, rel: 0, swapT: 0,
+    w1: makeW('wand'), w2: null, activeSlot: 0, rel: 0, swapT: 0,
     sk: skin(i)
   });
   X.restore();
@@ -1984,7 +2013,7 @@ document.querySelectorAll('button[data-m]').forEach(b => {
 // ==========================================
 // ONLINE 1v1 WEBRTC PEERJS MULTIPLAYER
 // ==========================================
-const PEER_PREFIX = 'gs8-';
+const PEER_PREFIX = 'va2d-';
 const CODE_CHARS = '23456789ABCDEFGHJKLMNPQRSTUVWXYZ';
 
 function genRoomCode() {
@@ -2270,7 +2299,9 @@ function broadcastHostSync() {
       vx: Math.round(p.vx * 10) / 10,
       vy: Math.round(p.vy * 10) / 10,
       f: p.f,
-      hp: p.hp,
+      stability: p.stability,
+      shield: p.shield || 0,
+      wobble: p.wobble || 0,
       fu: Math.round(p.fu),
       fl: p.fl,
       j: p.j,
@@ -2288,7 +2319,7 @@ function broadcastHostSync() {
       sk: p.sk,
       c: p.c
     })),
-    B: B.map(b => [Math.round(b.x), Math.round(b.y), Math.round(b.vx), Math.round(b.vy), b.w.c, b.w.ex || 0]),
+    B: B.map(b => [Math.round(b.x), Math.round(b.y), Math.round(b.vx), Math.round(b.vy), b.w.c, b.w.bounce || 0]),
     CR: CR.map(c => [Math.round(c.x), Math.round(c.y), Math.round(c.vy), c.type, c.item, c.chute ? 1 : 0]),
     ev: NET.eventsOut,
     pingTime: NET.lastPingSend
@@ -2320,7 +2351,7 @@ function onGuestSync(data) {
   if (data.B) {
     B = data.B.map(b => ({
       x: b[0], y: b[1], vx: b[2], vy: b[3],
-      w: { c: b[4], ex: b[5] },
+      w: { c: b[4], bounce: b[5] },
       l: 10
     }));
   }
@@ -2472,97 +2503,89 @@ function setupTouchControls() {
 setupTouchControls();
 
 // ==========================================
-// STEALTH DISGUISE & CLOAKING ENGINE
+// ARENA THEME & AUDIO CONTROLS ENGINE
 // ==========================================
-const CLOAK_PRESETS = {
-  physics: {
-    t: 'Kinematics & Vector Dynamics Lab',
-    i: "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><circle cx='16' cy='16' r='14' fill='%232563eb'/><path d='M8 24 L16 8 L24 24 Z' fill='%23fff'/></svg>"
+const THEMES = {
+  cyber: {
+    bg: '#0d111e',
+    fg: '#f4f1e8',
+    primary: '#0ea5e9',
+    card: '#181d33',
+    border: '#2c3356'
   },
-  classroom: {
-    t: 'Classes',
-    i: 'https://ssl.gstatic.com/classroom/favicon.png'
+  solar: {
+    bg: '#1a1008',
+    fg: '#fef3c7',
+    primary: '#f59e0b',
+    card: '#291b10',
+    border: '#452b1a'
   },
-  docs: {
-    t: 'Untitled document - Google Docs',
-    i: 'https://ssl.gstatic.com/docs/documents/images/kix-favicon7.ico'
+  emerald: {
+    bg: '#061a14',
+    fg: '#d1fae5',
+    primary: '#10b981',
+    card: '#0f2920',
+    border: '#1b4d3c'
   },
-  drive: {
-    t: 'My Drive - Google Drive',
-    i: 'https://ssl.gstatic.com/images/branding/product/1x/drive_2020q4_32dp.png'
+  midnight: {
+    bg: '#0b0f19',
+    fg: '#e0e7ff',
+    primary: '#8b5cf6',
+    card: '#161c2e',
+    border: '#2e3a5a'
   },
-  canvas: {
-    t: 'Dashboard',
-    i: 'https://du11hjcvx0uqb.cloudfront.net/br/dist/images/favicon-e10d657a73.ico'
-  },
-  desmos: {
-    t: 'Desmos | Graphing Calculator',
-    i: 'https://www.desmos.com/favicon.ico'
-  },
-  wikipedia: {
-    t: 'Classical mechanics - Wikipedia',
-    i: 'https://en.wikipedia.org/static/favicon/wikipedia.ico'
+  retro: {
+    bg: '#180d1d',
+    fg: '#fce7f3',
+    primary: '#ec4899',
+    card: '#291430',
+    border: '#4a2556'
   }
 };
 
-function applyCloak(key) {
-  const c = CLOAK_PRESETS[key] || CLOAK_PRESETS.physics;
-  document.title = c.t;
-  let fav = document.getElementById('page-favicon');
-  if (!fav) {
-    fav = document.createElement('link');
-    fav.id = 'page-favicon';
-    fav.rel = 'icon';
-    document.head.appendChild(fav);
+function applyTheme(themeKey) {
+  const t = THEMES[themeKey] || THEMES.cyber;
+  const r = document.documentElement.style;
+  r.setProperty('--bg', t.bg);
+  r.setProperty('--fg', t.fg);
+  r.setProperty('--primary', t.primary);
+  r.setProperty('--card', t.card);
+  r.setProperty('--card-border', t.border);
+  try { localStorage.setItem('va_theme', themeKey); } catch (e) {}
+}
+
+let soundEnabled = true;
+function toggleAudio() {
+  soundEnabled = !soundEnabled;
+  if ($('btn-audio')) {
+    $('btn-audio').textContent = soundEnabled ? '🔊 Sound: ON' : '🔇 Sound: OFF';
+    $('btn-audio').style.color = soundEnabled ? '#10b981' : '#94a3b8';
   }
-  fav.href = c.i;
-  try { localStorage.setItem('v_cloak', key); } catch (e) {}
-}
-
-function launchStealthTab() {
-  const win = window.open('about:blank', '_blank');
-  if (!win) {
-    alert('Please allow pop-ups for this tab to launch in stealth mode!');
-    return;
+  if (!soundEnabled && AC && AC.state === 'running') {
+    AC.suspend();
+  } else if (soundEnabled && AC && AC.state === 'suspended') {
+    AC.resume();
   }
-  const key = $('cloak-select') ? $('cloak-select').value : 'classroom';
-  const c = CLOAK_PRESETS[key] || CLOAK_PRESETS.classroom;
-  win.document.title = c.t;
-  const link = win.document.createElement('link');
-  link.rel = 'icon';
-  link.href = c.i;
-  win.document.head.appendChild(link);
-
-  const iframe = win.document.createElement('iframe');
-  iframe.style.position = 'fixed';
-  iframe.style.top = '0';
-  iframe.style.left = '0';
-  iframe.style.width = '100vw';
-  iframe.style.height = '100vh';
-  iframe.style.border = 'none';
-  iframe.style.margin = '0';
-  iframe.style.padding = '0';
-  iframe.style.zIndex = '999999';
-  iframe.src = window.location.href;
-  win.document.body.style.margin = '0';
-  win.document.body.style.overflow = 'hidden';
-  win.document.body.appendChild(iframe);
 }
 
-function triggerPanic() {
-  window.location.replace('https://classroom.google.com');
+function toggleFullscreen() {
+  if (!document.fullscreenElement) {
+    document.documentElement.requestFullscreen().catch(() => {});
+  } else {
+    document.exitFullscreen().catch(() => {});
+  }
 }
 
-// Initialize stealth cloaking
+// Initialize genuine theme & audio controls
 try {
-  const savedCloak = localStorage.getItem('v_cloak') || 'physics';
-  if ($('cloak-select')) {
-    $('cloak-select').value = savedCloak;
-    $('cloak-select').onchange = () => applyCloak($('cloak-select').value);
+  const savedTheme = localStorage.getItem('va_theme') || 'cyber';
+  if ($('theme-select')) {
+    $('theme-select').value = savedTheme;
+    $('theme-select').onchange = () => applyTheme($('theme-select').value);
   }
-  applyCloak(savedCloak);
-  if ($('btn-stealth-tab')) $('btn-stealth-tab').onclick = launchStealthTab;
-  if ($('btn-panic')) $('btn-panic').onclick = triggerPanic;
+  applyTheme(savedTheme);
+  if ($('btn-fullscreen')) $('btn-fullscreen').onclick = toggleFullscreen;
+  if ($('btn-audio')) $('btn-audio').onclick = toggleAudio;
 } catch (e) {}
 </script>
 </body>
